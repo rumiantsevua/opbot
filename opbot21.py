@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
-from bdpass import EMAIL, PASSWORD_EMAIL
+from bdpass import EMAIL, PASSWORD_EMAIL, FROM_ADDRESS_BD
 
 # Parameters for connecting to the mail server
 IMAP_SERVER = "imap.gmail.com"
@@ -16,7 +16,7 @@ EMAIL_ACCOUNT = EMAIL
 PASSWORD = PASSWORD_EMAIL
 
 # Search parameters
-FROM_ADDRESS = "tomasz@torebki-skorzane.pl"
+FROM_ADDRESS = FROM_ADDRESS_BD
 
 # Initialize variable for the last processed email
 last_processed_email_id = None
