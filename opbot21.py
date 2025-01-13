@@ -10,15 +10,15 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 from bdpass import EMAIL, PASSWORD_EMAIL, FROM_ADDRESS_BD
 
-# Parameters for connecting to the mail server
+# Параметри підключення
 IMAP_SERVER = "imap.gmail.com"
 EMAIL_ACCOUNT = EMAIL
 PASSWORD = PASSWORD_EMAIL
 
-# Search parameters
+# Параметр пошуку, у даному випадку емейл відправника
 FROM_ADDRESS = FROM_ADDRESS_BD
 
-# Initialize variable for the last processed email
+# Ініціалізація змінної останнбого обробленого листа
 last_processed_email_id = None
 
 def connect_to_mailbox():
@@ -65,7 +65,7 @@ try:
                 else:
                     html_content = msg.get_payload(decode=True).decode(errors='replace')
 
-                # Mark the email as read
+                # Помітка що лист прочитаний
                 mail.store(latest_email_id, '+FLAGS', '\\Seen')
                 last_processed_email_id = latest_email_id
 
@@ -83,7 +83,6 @@ try:
                         review_link = positive_links[0]
 
                         chrome_options = Options()
-                        # chrome_options.add_argument("--headless")  # При потребі розкоментуйте
                         chrome_options.add_argument("--disable-gpu")
                         chrome_options.add_argument("--no-sandbox")
                         chrome_options.add_argument("--window-size=1920x1080")
@@ -98,7 +97,6 @@ try:
 
                         # Якщо з'являється вікно з підтвердженням кукі:
                         try:
-                            # Селектор підлаштуйте під реальну верстку
                             cookie_button = WebDriverWait(driver, 10).until(
                                 EC.element_to_be_clickable(
                                     (By.XPATH, "//a[@href='#rejectAll' and contains(text(),'Potwierdzam wymagane')]")
@@ -108,13 +106,13 @@ try:
                             print("Cookie confirmation clicked.")
                             time.sleep(1)
                         except:
-                            # Якщо кнопка не з'являється, пропускаємо
+                            # Якщо кнопка не з'являється, то пропускаємо це
                             print("No cookie confirmation was displayed or failed to click.")
 
-                        # Знімаємо скріншот для дебагу
+                        # Скріншот для дебагу
                         driver.save_screenshot("debug_screenshot.png")
 
-                        # Відправляємо відгук про замовлення
+                        # Відправлення відгуку про замовлення
                         order_review = load_random_review("op.txt")
                         order_review_label = WebDriverWait(driver, 30).until(
                             EC.visibility_of_element_located(
@@ -136,7 +134,7 @@ try:
                         submit_button.click()
                         time.sleep(1)
 
-                        # Відправляємо відгук про товар
+                        # Відправлення відгуку про товар
                         product_review = load_random_review("opop.txt")
                         product_review_label = WebDriverWait(driver, 30).until(
                             EC.visibility_of_element_located(
@@ -168,7 +166,7 @@ try:
             print("No new emails.")
 
         mail.logout()
-        # 30 хвилин (1800 сек) + невелика пауза, щоб не було надто «рівномірних» інтервалів
+        # 30 хвилин (1800 сек) + невелика пауза
         time.sleep(1860)
 
 except KeyboardInterrupt:
